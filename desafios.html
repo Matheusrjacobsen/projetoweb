@@ -1,0 +1,70 @@
+<!-- Script -->
+<script>
+  window.onload = function () {
+    // Verifica login
+    const usuario = localStorage.getItem("ecoVidaUsuario");
+    if (!usuario) {
+      window.location.href = "login.html";
+      return;
+    }
+    document.getElementById("usuarioNome").textContent = usuario;
+
+    // Progresso individual
+    let progresso = JSON.parse(localStorage.getItem(`desafiosEcoVida_${usuario}`)) || {};
+
+    const desafios = [
+      { id: 1, texto: "Usar transporte público por 2 dias ou utilizar bicicleta" },
+      { id: 2, texto: "Não consumir carne por 2 dias" },
+      { id: 3, texto: "Reciclar o lixo seco da semana" },
+      { id: 4, texto: "Economizar energia desligando aparelhos desnecessários" },
+      { id: 5, texto: "Reduzir o uso de plástico descartável" },
+    ];
+
+    const lista = document.getElementById("listaDesafios");
+    const barra = document.getElementById("barraProgresso");
+
+    function renderizarDesafios() {
+      lista.innerHTML = "";
+
+      desafios.forEach((d) => {
+        const li = document.createElement("li");
+        li.className = "bg-white p-4 rounded-xl shadow flex items-center justify-between";
+
+        const label = document.createElement("label");
+        label.className = "flex items-center space-x-3";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = progresso[d.id] || false;
+        checkbox.className = "h-5 w-5 text-green-600";
+
+        checkbox.addEventListener("change", () => {
+          progresso[d.id] = checkbox.checked;
+          localStorage.setItem(`desafiosEcoVida_${usuario}`, JSON.stringify(progresso));
+          atualizarProgresso();
+        });
+
+        const span = document.createElement("span");
+        span.textContent = d.texto;
+
+        label.appendChild(checkbox);
+        label.appendChild(span);
+        li.appendChild(label);
+        lista.appendChild(li);
+      });
+
+      atualizarProgresso();
+    }
+
+    function atualizarProgresso() {
+      const total = desafios.length;
+      const completos = Object.values(progresso).filter(v => v).length;
+      const percent = Math.round((completos / total) * 100);
+
+      barra.style.width = percent + "%";
+      barra.textContent = percent + "%";
+    }
+
+    renderizarDesafios();
+  };
+</script>

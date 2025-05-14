@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Impacto | EcoVida</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-green-50 text-gray-800 font-sans">
+
+  <!-- Header -->
+  <header class="bg-green-700 text-white p-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">🌱 EcoVida</h1>
+      <nav class="space-x-4">
+        <a href="index.html" class="hover:underline">Início</a>
+        <a href="calculadora.html" class="hover:underline font-bold underline">Calculadora</a>
+        <a href="desafios.html" class="hover:underline">Desafios</a>
+        <a href="blog.html" class="hover:underline">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Conteúdo -->
+  <main class="container mx-auto py-12 px-4">
+    <h2 class="text-3xl font-bold mb-6 text-center">Calculadora de Impacto Ambiental</h2>
+
+    <form id="impactForm" class="bg-white shadow-md rounded-xl p-6 space-y-6 max-w-xl mx-auto">
+      <div>
+        <label class="block mb-2 font-semibold">Quantos kWh de energia elétrica você consome por mês?</label>
+        <input type="number" id="energia" class="w-full border rounded p-2" required>
+      </div>
+
+      <div>
+        <label class="block mb-2 font-semibold">Quantos km você dirige por semana?</label>
+        <input type="number" id="transporte" class="w-full border rounded p-2" required>
+      </div>
+
+      <div>
+        <label class="block mb-2 font-semibold">Quantos dias por semana você consome carne?</label>
+        <input type="number" id="carne" class="w-full border rounded p-2" required min="0" max="7">
+      </div>
+
+      <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+        Calcular Impacto
+      </button>
+    </form>
+
+    <!-- Resultado -->
+    <div id="resultado" class="mt-8 max-w-xl mx-auto hidden bg-white rounded-xl p-6 shadow-md">
+      <h3 class="text-xl font-semibold mb-4">Resultado:</h3>
+      <p id="mensagem" class="text-lg"></p>
+    </div>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="bg-green-700 text-white py-6 text-center mt-12">
+    <p> EcoVida, um desenvolvimento para DESAFIO Unisinos.</p>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    document.getElementById('impactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const energia = parseFloat(document.getElementById('energia').value);
+      const transporte = parseFloat(document.getElementById('transporte').value);
+      const carne = parseInt(document.getElementById('carne').value);
+
+      let impacto = 0;
+      impacto += energia * 0.05;       // kWh
+      impacto += transporte * 0.2;     // km
+      impacto += carne * 10;           // dias por semana com carne
+
+      const resultado = document.getElementById('resultado');
+      const mensagem = document.getElementById('mensagem');
+
+      resultado.classList.remove('hidden');
+
+      if (impacto < 50) {
+        mensagem.innerHTML = `Seu impacto é <strong>baixo</strong>. Parabéns! Continue com bons hábitos! 🌿`;
+      } else if (impacto < 100) {
+        mensagem.innerHTML = `Seu impacto é <strong>moderado</strong>. Você pode melhorar reduzindo o uso de carro e carne. 💡`;
+      } else {
+        mensagem.innerHTML = `Seu impacto é <strong>alto</strong>. Considere usar transporte público, reduzir consumo de energia e carne. 🌎`;
+      }
+    });
+  </script>
+
+</body>
+</html>
